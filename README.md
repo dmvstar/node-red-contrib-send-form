@@ -1,9 +1,9 @@
-# node-red-contrib-send-multipart
+# node-red-contrib-send-form
 This is a node-red node for posting http(s) requests containing files as multipart formData. Currently a work in progress.
 As of now this node is only looking for files. However, there are future plans to handle all multipart/form-data.
 
 ## Installation
-run npm -g install node-red-contrib-send-multipart
+run npm -g install node-red-contrib-send-form
 
 ## Features
 Pulled together using some of the best of parts of other node-red-contrib nodes (particularly node-red-contrib-http-request), and the best parts of stackoverflow.
