@@ -1,0 +1,35 @@
+{
+  "author": {
+    "name": "StarDust"
+  },
+  "bugs": {
+    "url": "https://github.com/computerFriend/node-red-contrib-send-multipart/issues"
+  },
+
+  "dependencies": {
+    "mustache": "^2.3.0",
+    "request": "^2.86.0",
+    "form-data": ">=2.5.1"
+  },
+  "deprecated": false,
+  "description": "NodeRed node for posting multipart form data to external sites",
+  "homepage": "https://github.com/computerFriend/node-red-contrib-send-multipart#readme",
+  "keywords": [
+    "node-red",
+    "multipart",
+    "formdata"
+  ],
+  "license": "MIT",
+  "name": "node-red-contrib-send-form",
+  "node-red": {
+    "nodes": {
+      "http-send-multipart-form": "http-send-multipart-form.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/computerFriend/node-red-contrib-send-multipart.git"
+  },
+  "scripts": {},
+  "version": "0.3.9"
+}
