@@ -3,7 +3,7 @@
     "name": "StarDust"
   },
   "bugs": {
-    "url": "https://github.com/computerFriend/node-red-contrib-send-multipart/issues"
+    "url": "https://github.com/dmvstar/node-red-contrib-send-form/issues"
   },
 
   "dependencies": {
@@ -13,7 +13,7 @@
   },
   "deprecated": false,
   "description": "NodeRed node for posting multipart form data to external sites",
-  "homepage": "https://github.com/computerFriend/node-red-contrib-send-multipart#readme",
+  "homepage": "https://https://github.com/dmvstar/node-red-contrib-send-form#readme",
   "keywords": [
     "node-red",
     "multipart",
@@ -28,8 +28,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/computerFriend/node-red-contrib-send-multipart.git"
+    "url": "git+https://github.com/dmvstar/node-red-contrib-send-form.git"
   },
   "scripts": {},
-  "version": "0.3.9"
+  "version": "0.3.10"
 }
