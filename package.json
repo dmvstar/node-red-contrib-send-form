@@ -31,5 +31,5 @@
     "url": "git+https://github.com/dmvstar/node-red-contrib-send-form.git"
   },
   "scripts": {},
-  "version": "0.3.10"
+  "version": "0.3.11"
 }
