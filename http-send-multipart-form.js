@@ -1,21 +1,23 @@
 // require in libs
 var mustache = require('mustache'),
-	request = require('request'),
-	formData = require('form-data-buffer'),
-	fs = require('fs');
-
+request = require('request'),
+formData = require('form-data-buffer'),
+fs = require('fs');
 const fileType = require('file-type');
+// require in libs
 
 var filepath = "default.csv"; // initializing filepath
 
-module.exports = function(RED) {
+module.exports = function (RED) {
 
 	function httpSendMultipart(n) {
 		// Setup node
 		RED.nodes.createNode(this, n);
 		var node = this;
 		var nodeUrl = n.url;
-
+		
+        var isTemplatedUrl = (nodeUrl || "").indexOf("{{") != -1;
+		
 		var isTemplatedUrl = (nodeUrl || "").indexOf("{{") != -1;
 
 		this.ret = n.ret || "txt"; // default return type is text
@@ -26,15 +28,17 @@ module.exports = function(RED) {
 		}
 
 		// 1) Process inputs to Node
-		this.on("input", function(msg) {
+		this.on("input", function (msg) {
 
 			// TODO: add ability to select other input types (not just files)
 
 			// Look for filepath - // TODO improve logic
 
-            for(x in msg.payload) {
-                console.log(x+"->"+msg.payload[x]);
-            }
+			if(msg.payload.form_options !== undefined) {
+				for (x in msg.payload.form_options) {
+					console.log(x + "->" + msg.payload.form_options[x]);
+				}
+			}
 
 			if (!n.filepath && !msg.filepath) {
 				// throw an error if no filepath
@@ -55,9 +59,11 @@ module.exports = function(RED) {
 					text: "Sending multipart request..."
 				});
 				var url = nodeUrl; // TODO add ability to take this from the settings.js config file
+				
 				if (isTemplatedUrl) {
 					url = mustache.render(nodeUrl, msg);
 				}
+				
 				if (!url) {
 					node.error(RED._("httpSendMultipart.errors.no-url"), msg);
 					node.status({
@@ -68,21 +74,64 @@ module.exports = function(RED) {
 					return;
 				}
 
-
 				// Add auth if it exists
 				if (this.credentials && this.credentials.user) {
 					var urlTail = url.substring(url.indexOf('://') + 3); // hacky but it works. don't judge me
 					var username = this.credentials.user,
-						password = this.credentials.password;
+					password = this.credentials.password;
 					url = 'https://' + username + ':' + password + '@' + urlTail;
-
 				}
 
-				var respBody, respStatus;
+				var FormData = require('form-data-buffer');
 
-				var thisReq = request.post(url, function(err, resp, body) {
+				var formData = new FormData();
+				var buffer, filename = 'default', filemime = 'unknown';
+				
+				if(msg.payload.file_name !== undefined) {
+					filename = msg.payload.file_name;
+				}	
+				
+				if(msg.payload.photo !== undefined) {
+					buffer = Buffer.from(n.filepath, 'base64');
+				} else {
+					buffer = Buffer.from(msg.payload.photo, 'base64');
+				}
+				
+				var fileTypeInfo = fileType(buffer);
+				filetype = fileTypeInfo.mime;
+				filename += fileTypeInfo.ext;
 
-					if (err || !resp) {
+console.log("httpSendMultipart 1");
+console.log(fileType(buffer));
+console.log("httpSendMultipart 1");
+
+console.log("httpSendMultipart 2");
+console.log(url);
+console.log("httpSendMultipart 2");
+
+				
+				if(msg.payload.form_options !== undefined) {
+					for (x in msg.payload.form_options) {
+						console.log(x + "->" + msg.payload.form_options[x]);
+						formData.append(x, msg.payload.form_options[x]);
+					}
+				} else {
+					formData.append('chat_id', '457840189');
+					formData.append('caption', 'photo251');
+				}
+				
+				formData.append('photo', buffer, {
+					'contentType': filetype, //'image/png',
+					'filename': filemime //'nb-3x256.png'
+				});
+
+//				formData.submit('https://api.telegram.org/bot960067796:AAEA_yYDSp5zPwIu1zxCvb5UR2yakGqkEsY/sendPhoto',
+				
+				formData.submit(url,
+					function (err, res) { // StarBot
+
+
+					if (err || !res) {
 						// node.error(RED._("httpSendMultipart.errors.no-url"), msg);
 						var statusText = "Unexpected error";
 						if (err) {
@@ -95,34 +144,14 @@ module.exports = function(RED) {
 							shape: "ring",
 							text: statusText
 						});
+					} else {
+						res.resume();
+						msg.payload = res;
+						node.send(msg);
 					}
-					msg.payload = body;
-					msg.statusCode = resp.statusCode || resp.status;
-					msg.headers = resp.headers;
-
-					if (node.ret !== "bin") {
-						msg.payload = body.toString('utf8'); // txt
-
-						if (node.ret === "obj") {
-							try {
-								msg.payload = JSON.parse(body);
-							} catch (e) {
-								node.warn(RED._("httpSendMultipart.errors.json-error"));
-							}
-						}
-					}
-
-					node.send(msg);
 				});
-				var form = thisReq.form();
-				form.append('file', fs.createReadStream(filepath), {
-					filename: filepath, // TODO: dynamically pull out just the filename
-					contentType: 'multipart/form-data'
-				});
-			}
-
+			} //else
 		}); // end of on.input
-
 	} // end of httpSendMultipart fxn
 
 	// Register the Node
@@ -137,4 +166,4 @@ module.exports = function(RED) {
 		}
 	});
 
-};
+}; // end module.exports
