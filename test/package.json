@@ -9,12 +9,12 @@
 	"dependencies": {
 		"mustache": "^2.3.0",
 		"request": "^2.86.0",
-		"file-type": ">=12.3.0",
-		"form-data-buffer": ">=0.0.2"
-   		},
-		"deprecated": false,
-		"description": "NodeRed node for posting multipart form data to external sites",
-		"homepage": "https: //github.com/dmvstar/node-red-contrib-send-form#readme",
+		"file-type": ">=12.3.0,
+		"form-data-buffer": ">= 0.0.2"
+		  },
+		  "deprecated": false,
+		  "description": "NodeRed node for posting multipart form data to external sites",
+		  "homepage": "https: //github.com/dmvstar/node-red-contrib-send-form#readme",
 		"keywords": [
 			"node-red",
 			"multipart",

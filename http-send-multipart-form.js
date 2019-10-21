@@ -1,8 +1,10 @@
 // require in libs
 var mustache = require('mustache'),
 	request = require('request'),
-	formData = require('form-data'),
+	formData = require('form-data-buffer'),
 	fs = require('fs');
+
+const fileType = require('file-type');
 
 var filepath = "default.csv"; // initializing filepath
 
