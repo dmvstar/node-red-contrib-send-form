@@ -13,12 +13,14 @@ Currently only sends files. However, there are future plans to handle other type
 Required inputs: 
 url (this is specified on the node) 
 filedata base64 or binary buffer
-- Pass the buffer into the node as part of the msg, as "msg.payload.fileData"
+  - Pass the buffer into the node as part of the msg, as "msg.payload.fileData"
+
 Source type
 Can be selected within the node from a dropdown menu "type" or passed in "msg.payload.fileType". Payload overrides the dropdown menu
 Currently accepts  
-- Base64
-- Binary
+  - Base64
+  - Binary
+
 Form Fields as part of payload, well be added to form via formData.append(<name>, <value>);
 - msg.payload.formOptions.chat_id = '213123123213';
 - msg.payload.formOptions.caption = 'photo_'+stamp;
