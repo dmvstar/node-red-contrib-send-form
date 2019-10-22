@@ -10,11 +10,16 @@ Pulled together using some of the best of parts of other node-red-contrib nodes 
 Currently only sends files. However, there are future plans to handle other types multipart/form-data.
 
 ## Usage
-Required inputs: url (this is specified on the node) & (filepath (path to the file to be sent) or binary buffer)
-Filepath can be indicated 2 ways:
-1. Explicitly state the filepath on the node (useful if filepath is a constant)
-2. Pass the filepath into the node as part of the msg, as "msg.filepath"
-3. Pass the buffer into the node as part of the msg, as "msg.payload.{{filepath}}"
+Required inputs: 
+url (this is specified on the node) 
+filepath (path to the file to be sent) or binary buffer
+	Filepath can be indicated 3 ways:
+	1. Explicitly state the filepath on the node (useful if filepath is a constant)
+	2. Pass the filepath into the node as part of the msg, as "msg.filepath"
+	3. Pass the buffer into the node as part of the msg, as "msg.payload.{{filepath}}"
+Form Fields as part of payload, well be added to form via formData.append( <name>, <value>);
+	msg.payload.form_options.chat_id = '213123123213';
+	msg.payload.form_options.caption = 'photo_'+stamp;
 
 
 ## Why this module?
