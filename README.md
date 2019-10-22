@@ -12,14 +12,16 @@ Currently only sends files. However, there are future plans to handle other type
 ## Usage
 Required inputs: 
 url (this is specified on the node) 
-filepath (path to the file to be sent) or binary buffer
-	Filepath can be indicated 3 ways:
-	1. Explicitly state the filepath on the node (useful if filepath is a constant)
-	2. Pass the filepath into the node as part of the msg, as "msg.filepath"
-	3. Pass the buffer into the node as part of the msg, as "msg.payload.{{filepath}}"
-Form Fields as part of payload, well be added to form via formData.append( <name>, <value>);
-	msg.payload.form_options.chat_id = '213123123213';
-	msg.payload.form_options.caption = 'photo_'+stamp;
+filedata base64 or binary buffer
+- Pass the buffer into the node as part of the msg, as "msg.payload.fileData"
+Source type
+Can be selected within the node from a dropdown menu "type" or passed in "msg.payload.fileType". Payload overrides the dropdown menu
+Currently accepts  
+- Base64
+- Binary
+Form Fields as part of payload, well be added to form via formData.append(<name>, <value>);
+- msg.payload.formOptions.chat_id = '213123123213';
+- msg.payload.formOptions.caption = 'photo_'+stamp;
 
 
 ## Why this module?
