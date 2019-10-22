@@ -6,12 +6,20 @@
 			name: {
 				value: ""
 			},
+			filetype: {
+				value: ""
+			},
+			formparts:{
+				value: ""
+			},
 			ret: {
 				value: "txt"
 			},
+/*			
 			filepath: {
 				value: ""
 			},
+*/			
 			url: {
 				value: ""
 			},
@@ -96,22 +104,23 @@
 		<input type="text" id="node-input-url" placeholder="http://">
 	</div>
 
-	<div class="form-row">
+	<!--div class="form-row">
 		<label for="node-input-filepath"> Filepath </label>
 		<input type="text" id="node-input-filepath" placeholder="/path/to/file">
-	</div>
+	</div-->
 
 	<div class="form-row">
-		<label for="node-input-filesrc"><i class="fa fa-arrow-left"></i><span> File source type</span></label>
-		<select type="text" id="node-input-filesrc" style="width:70%;">
-        <option selected value="buffer">Buffer</option>
-        <option value="local">Local path</option>
+		<label for="node-input-filetype"><i class="fa fa-arrow-left"></i><span> File source type</span></label>
+		<select type="text" id="node-input-filetype" style="width:70%;">
+        <option selected value="empty"></option>
+        <option value="base64">Base64</option>
+        <option value="binary">Binary</option>
         </select>
 	</div>
 
     <div class="form-row">
-		<label for="node-input-form-parts"> Form Parts </label>
-		<input type="text" id="node-input-form-parts" placeholder="[{'chat_id': '324234234'},{'caption': 'Photo_343'}]">
+		<label for="node-input-formparts"> Form Parts </label>
+		<input type="text" id="node-input-formparts" placeholder="[{'chat_id': '324234234'},{'caption': 'Photo_343'}]">
 	</div>
 
 	<div class="form-row">

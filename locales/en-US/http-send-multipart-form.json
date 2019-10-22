@@ -1,0 +1,8 @@
+{
+    "http-send-multipart-form" : {
+	"errors":{
+		"no-file-data-type": "Not determite file data type (base64 or binary)",
+		"error-status-code": "Error status code"
+	} 
+    }
+}

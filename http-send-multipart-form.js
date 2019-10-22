@@ -6,7 +6,7 @@ fs = require('fs');
 const fileType = require('file-type');
 // require in libs
 
-var filepath = "default.csv"; // initializing filepath
+var fileData = ""; // initializing file
 
 module.exports = function (RED) {
 
@@ -29,30 +29,23 @@ module.exports = function (RED) {
 
 		// 1) Process inputs to Node
 		this.on("input", function (msg) {
-
 			// TODO: add ability to select other input types (not just files)
-
-			// Look for filepath - // TODO improve logic
-
-			if(msg.payload.form_options !== undefined) {
-				for (x in msg.payload.form_options) {
-					console.log(x + "->" + msg.payload.form_options[x]);
+			
+			if(msg.payload.formOptions !== undefined) {
+				for (x in msg.payload.formOptions) {
+					console.log(x + "->" + msg.payload.formOptions[x]);
 				}
 			}
 
-			if (!n.filepath && !msg.filepath) {
-				// throw an error if no filepath
-				node.warn(RED._("Error: no filepath found to send file."));
-				msg.error = "Filepath was not defined";
+			if (!msg.payload.fileData) {
+				// throw an error if no file
+				node.warn(RED._("Error: no file found to send."));
+				msg.error = "File was not defined";
 				msg.statusCode = 400;
 				node.send(msg); // TODO: make sure this escapes entirely; need better error-handling here
 			} else {
-				if (n.filepath) {
-					filepath = n.filepath;
-				} else if (msg.filepath) { // TODO: improve logic
-					filepath = msg.filepath;
-				}
-
+				fileData = msg.payload.fileData;
+			}
 				node.status({
 					fill: "blue",
 					shape: "dot",
@@ -85,51 +78,74 @@ module.exports = function (RED) {
 				var FormData = require('form-data-buffer');
 
 				var formData = new FormData();
-				var buffer, filename = 'default', filemime = 'unknown';
+				var buffer, fileName = 'default', fileMime = 'unknown', fileDataType;
 				
-				if(msg.payload.file_name !== undefined) {
-					filename = msg.payload.file_name;
+				if(msg.payload.fileName !== undefined) {
+					fileName = msg.payload.fileName;
 				}	
 				
-				if(msg.payload.photo !== undefined) {
-					buffer = Buffer.from(n.filepath, 'base64');
-				} else {
-					buffer = Buffer.from(msg.payload.photo, 'base64');
+				fileDataType = n.filetype;
+				if(msg.payload.fileDataType !== undefined) {
+					fileDataType = msg.payload.fileDataType;
+				} 
+console.log("fileDataType: "+fileDataType);
+				if (fileDataType !== 'base64' && fileDataType !== 'binary'){
+					node.error(RED._("node-red-contrib-send-form .errors.no-file-data-type") + " ["+fileDataType+"]", msg); //   
+					node.status({
+						fill: "red",
+						shape: "ring",
+						text: (RED._("node-red-contrib-send-form .errors.no-file-data-type") + " ["+fileDataType+"]")
+					});
+					return;
+				}	
+				
+console.log("msg.payload.fileData " +msg.payload.fileData.length);
+			
+				if(msg.payload.fileData !== undefined) {
+				{
+					if (fileDataType === 'base64')
+						buffer = Buffer.from(msg.payload.fileData, 'base64');
+					else
+						buffer = msg.payload.fileData;
 				}
 				
 				var fileTypeInfo = fileType(buffer);
-				filetype = fileTypeInfo.mime;
-				filename += fileTypeInfo.ext;
+				fileMime = fileTypeInfo.mime;
+				fileName += "."+fileTypeInfo.ext;
 
-console.log("httpSendMultipart 1");
 console.log(fileType(buffer));
-console.log("httpSendMultipart 1");
-
-console.log("httpSendMultipart 2");
 console.log(url);
-console.log("httpSendMultipart 2");
 
-				
-				if(msg.payload.form_options !== undefined) {
-					for (x in msg.payload.form_options) {
-						console.log(x + "->" + msg.payload.form_options[x]);
-						formData.append(x, msg.payload.form_options[x]);
+
+				if(msg.payload.formOptions !== undefined) {
+					for (x in msg.payload.formOptions) {
+						console.log(x + "->" + msg.payload.formOptions[x]);
+						formData.append(x, msg.payload.formOptions[x]);
 					}
 				} else {
 					formData.append('chat_id', '457840189');
 					formData.append('caption', 'photo251');
 				}
-				
-				formData.append('photo', buffer, {
-					'contentType': filetype, //'image/png',
-					'filename': filemime //'nb-3x256.png'
+
+				var formFileField = msg.payload.formFileField;
+console.log(formFileField + " "+msg.payload.fileData.length+" "+buffer.length);
+console.log('contentType '+ fileMime + ' filename '+ fileName);
+
+
+				formData.append(formFileField, buffer, { 	// 'photo'
+					'contentType': fileMime, 				//'image/png',
+					'filename': fileName 					//'nb-3x256.png'
 				});
 
-//				formData.submit('https://api.telegram.org/bot960067796:AAEA_yYDSp5zPwIu1zxCvb5UR2yakGqkEsY/sendPhoto',
+
+//formData.append('chat_id', '457840189');
+//formData.append('caption', 'photo251');
+//formData.append('photo',    buffer, {'contentType': 'image/png', 'filename': 'nb-3x256.png'});
 				
+				
+//				formData.submit('https://api.telegram.org/bot960067796:AAEA_yYDSp5zPwIu1zxCvb5UR2yakGqkEsY/sendPhoto',
 				formData.submit(url,
 					function (err, res) { // StarBot
-
 
 					if (err || !res) {
 						// node.error(RED._("httpSendMultipart.errors.no-url"), msg);
@@ -148,6 +164,21 @@ console.log("httpSendMultipart 2");
 						res.resume();
 						msg.payload = res;
 						node.send(msg);
+console.log("msg.statusCode "+msg.payload.statusCode);
+
+						if(msg.payload.statusCode !== 200){
+console.log("msg.statusCode "+msg.payload.statusCode);
+							node.status({
+								fill: "red",
+								shape: "ring",
+								//text: "node-red-contrib-send-form .errors.status " + msg.payload.statusCode
+								text: (RED._("node-red-contrib-send-form.errors.error-status-code") + " ["+msg.payload.statusCode+"]")
+							});
+						} else {
+console.log("msg.statusCode "+msg.payload.statusCode);
+							node.status({
+							});
+						}
 					}
 				});
 			} //else
