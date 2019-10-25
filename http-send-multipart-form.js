@@ -122,9 +122,6 @@ console.log(url);
 						console.log(x + "->" + msg.payload.formOptions[x]);
 						formData.append(x, msg.payload.formOptions[x]);
 					}
-				} else {
-					formData.append('chat_id', '457840189');
-					formData.append('caption', 'photo251');
 				}
 
 				var formFileField = msg.payload.formFileField;
@@ -171,7 +168,6 @@ console.log("msg.statusCode "+msg.payload.statusCode);
 							node.status({
 								fill: "red",
 								shape: "ring",
-								//text: "node-red-contrib-send-form .errors.status " + msg.payload.statusCode
 								text: (RED._("node-red-contrib-send-form.errors.error-status-code") + " ["+msg.payload.statusCode+"]")
 							});
 						} else {
