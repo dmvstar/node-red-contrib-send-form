@@ -7,6 +7,7 @@ const fileType = require('file-type');
 // require in libs
 
 var fileData = ""; // initializing file
+var debug = false; 
 
 module.exports = function (RED) {
 
@@ -31,6 +32,10 @@ module.exports = function (RED) {
 		this.on("input", function (msg) {
 			// TODO: add ability to select other input types (not just files)
 			
+			if(msg.payload.debug !== undefined) {
+				debug = true;
+			}
+
 			if(msg.payload.formOptions !== undefined) {
 				for (x in msg.payload.formOptions) {
 					console.log(x + "->" + msg.payload.formOptions[x]);
@@ -88,7 +93,7 @@ module.exports = function (RED) {
 				if(msg.payload.fileDataType !== undefined) {
 					fileDataType = msg.payload.fileDataType;
 				} 
-console.log("fileDataType: "+fileDataType);
+				if(debug) console.log("fileDataType: "+fileDataType);
 				if (fileDataType !== 'base64' && fileDataType !== 'binary'){
 					node.error(RED._("node-red-contrib-send-form .errors.no-file-data-type") + " ["+fileDataType+"]", msg); //   
 					node.status({
@@ -99,7 +104,7 @@ console.log("fileDataType: "+fileDataType);
 					return;
 				}	
 				
-console.log("msg.payload.fileData " +msg.payload.fileData.length);
+				if(debug) console.log("msg.payload.fileData " +msg.payload.fileData.length);
 			
 				if(msg.payload.fileData !== undefined) {
 				{
@@ -113,8 +118,8 @@ console.log("msg.payload.fileData " +msg.payload.fileData.length);
 				fileMime = fileTypeInfo.mime;
 				fileName += "."+fileTypeInfo.ext;
 
-console.log(fileType(buffer));
-console.log(url);
+				if(debug) console.log(fileType(buffer));
+				if(debug) console.log(url);
 
 
 				if(msg.payload.formOptions !== undefined) {
@@ -125,8 +130,8 @@ console.log(url);
 				}
 
 				var formFileField = msg.payload.formFileField;
-console.log(formFileField + " "+msg.payload.fileData.length+" "+buffer.length);
-console.log('contentType '+ fileMime + ' filename '+ fileName);
+				if(debug) console.log(formFileField + " "+msg.payload.fileData.length+" "+buffer.length);
+				if(debug) console.log('contentType '+ fileMime + ' filename '+ fileName);
 
 
 				formData.append(formFileField, buffer, { 	// 'photo'
@@ -140,7 +145,7 @@ console.log('contentType '+ fileMime + ' filename '+ fileName);
 //formData.append('photo',    buffer, {'contentType': 'image/png', 'filename': 'nb-3x256.png'});
 				
 				
-//				formData.submit('https://api.telegram.org/bot960067796:AAEA_yYDSp5zPwIu1zxCvb5UR2yakGqkEsY/sendPhoto',
+//				formData.submit('https://api.telegram.org/bot<BOT_ID>/sendPhoto',
 				formData.submit(url,
 					function (err, res) { // StarBot
 
@@ -161,17 +166,17 @@ console.log('contentType '+ fileMime + ' filename '+ fileName);
 						res.resume();
 						msg.payload = res;
 						node.send(msg);
-console.log("msg.statusCode "+msg.payload.statusCode);
+						if(debug) console.log("msg.statusCode "+msg.payload.statusCode);
 
 						if(msg.payload.statusCode !== 200){
-console.log("msg.statusCode "+msg.payload.statusCode);
+							if(debug) console.log("msg.statusCode "+msg.payload.statusCode);
 							node.status({
 								fill: "red",
 								shape: "ring",
 								text: (RED._("node-red-contrib-send-form.errors.error-status-code") + " ["+msg.payload.statusCode+"]")
 							});
 						} else {
-console.log("msg.statusCode "+msg.payload.statusCode);
+							if(debug) console.log("msg.statusCode "+msg.payload.statusCode);
 							node.status({
 							});
 						}

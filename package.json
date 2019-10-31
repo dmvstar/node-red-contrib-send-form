@@ -1,9 +1,15 @@
 {
-	"author": {
+	"author": [{
 		"name": "StarDust",
 		"email": "dmvstar.devel@gmail.com",
 		"url": "https://github.com/dmvstar"
 	},
+	{
+		"name": "Chebotarov",
+		"email": "swiftshade@gmail.com",
+		"url": "https://github.com/ArcanePhysics"
+	}
+	],
 	"bugs": {
 		"url": "https://github.com/dmvstar/node-red-contrib-send-form/issues"
 	},
