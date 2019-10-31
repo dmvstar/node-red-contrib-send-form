@@ -33,3 +33,7 @@ There is always room for improvement, and new ideas are valued.  Feel free to su
 
 ## What's next?
 In the future, I definitely want to add more support for other data types, as well as more flexibility in the model.  For example, I'd for users to be able to just pass in a file instead of read it from local.  I developed this node for a very specific use case, which is why I haven't dived into all that yet.  It's on my to-do list!
+
+## PS
+Depends on form-data-buffer - Fork from form-data that accepts Readable stream instead of file 
+deps/form-data-buffer.7z must be installed manually
