@@ -24,6 +24,7 @@ Currently accepts
 Form Fields as part of payload, well be added to form via formData.append(<name>, <value>);
 - msg.payload.formOptions.chat_id = '213123123213';
 - msg.payload.formOptions.caption = 'photo_'+stamp;
+- msg.payload.formOptions.caption = buffer.length;
 
 
 ## Why this module?
