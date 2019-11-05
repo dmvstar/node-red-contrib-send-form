@@ -32,13 +32,15 @@ module.exports = function (RED) {
 		this.on("input", function (msg) {
 			// TODO: add ability to select other input types (not just files)
 			
-			if(msg.payload.debug !== undefined) {
-				debug = true;
+			if(msg.debug !== undefined) {
+				debug = msg.debug;
 			}
 
-			if(msg.payload.formOptions !== undefined) {
-				for (x in msg.payload.formOptions) {
-					console.log(x + "->" + msg.payload.formOptions[x]);
+			if(debug) {	
+				if(msg.payload.formOptions !== undefined) {
+					for (x in msg.payload.formOptions) {
+						console.log(x + "->" + msg.payload.formOptions[x]);
+					}
 				}
 			}
 
@@ -121,10 +123,9 @@ module.exports = function (RED) {
 				if(debug) console.log(fileType(buffer));
 				if(debug) console.log(url);
 
-
 				if(msg.payload.formOptions !== undefined) {
 					for (x in msg.payload.formOptions) {
-						console.log(x + "->" + msg.payload.formOptions[x]);
+						if(debug) console.log(x + "->" + msg.payload.formOptions[x]);
 						formData.append(x, msg.payload.formOptions[x]);
 					}
 				}
