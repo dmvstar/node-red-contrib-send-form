@@ -1,7 +1,7 @@
 // require in libs
 var mustache = require('mustache'),
 request = require('request'),
-formData = require('form-data-buffer'),
+formData = require('form-data'),
 fs = require('fs');
 const fileType = require('file-type');
 // require in libs
