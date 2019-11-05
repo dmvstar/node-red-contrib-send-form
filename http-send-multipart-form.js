@@ -80,7 +80,7 @@ module.exports = function (RED) {
 					url = 'https://' + username + ':' + password + '@' + urlTail;
 				}
 
-				var FormData = require('form-data-buffer');
+				var FormData = require('form-data');
 
 				var formData = new FormData();
 				var buffer, fileName = 'default', fileMime = 'unknown', fileDataType;
