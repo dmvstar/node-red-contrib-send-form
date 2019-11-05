@@ -9,8 +9,8 @@ const fileType = require('file-type');
 var formData = new FormData();
 
 //-------------------------------------------------------------
-var chat_id = '457840189';
-var bot_id = 'bot960067796:AAEA_yYDSp5zPwIu1zxCvb5UR2yakGqkEsY';
+var chat_id = '<CHAT_ID>';
+var bot_id = 'bot<BOT_ID>';
 var url = 'https://api.telegram.org/'+bot_id+'/sendPhoto';
 //-------------------------------------------------------------
 
