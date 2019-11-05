@@ -16,7 +16,7 @@
 	},
 	"dependencies": {
 		"file-type": ">=12.3.0",
-		"form-data-buffer": ">=0.0.2",
+		"form-data": ">=2.5.1",
 		"mustache": "^2.3.0",
 		"request": "^2.86.0"
 	},
@@ -38,5 +38,5 @@
 		"url": "git+https://github.com/dmvstar/node-red-contrib-send-form.git"
 	},
 	"scripts": {},
-	"version": "0.3.15"
+	"version": "0.3.17"
 }
