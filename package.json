@@ -1,11 +1,13 @@
 {
 	"description": "NodeRed node for posting multipart form data to external sites",
 	"homepage": "https: //github.com/dmvstar/node-red-contrib-send-form#readme",
-	"author": [{
+	"author": [
+		{
 			"name": "StarDust",
 			"email": "dmvstar.devel@gmail.com",
 			"url": "https://github.com/dmvstar"
-		}, {
+		},
+		{
 			"name": "Chebotarov",
 			"email": "swiftshade@gmail.com",
 			"url": "https://github.com/ArcanePhysics"
@@ -15,10 +17,10 @@
 		"url": "https://github.com/dmvstar/node-red-contrib-send-form/issues"
 	},
 	"dependencies": {
-		"file-type": ">=12.3.0",
-		"form-data": ">=2.5.1",
-		"mustache": "^2.3.0",
-		"request": "^2.86.0"
+		"file-type": ">=12.4.0",
+		"form-data": ">=3.0.0",
+		"mustache": ">=2.3.0",
+		"request": ">=2.86.0"
 	},
 	"deprecated": false,
 	"keywords": [
@@ -38,5 +40,5 @@
 		"url": "git+https://github.com/dmvstar/node-red-contrib-send-form.git"
 	},
 	"scripts": {},
-	"version": "0.3.18"
+	"version": "0.3.19"
 }
